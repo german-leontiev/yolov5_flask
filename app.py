@@ -19,6 +19,7 @@ def detect_fire(source_file, weights, project, name, device_name="cpu"):
          f"--name={name}"])
     p.wait()
 
+
 def rm_tree(pth):
     pth = Path(pth)
     for child in pth.glob('*'):
@@ -27,6 +28,7 @@ def rm_tree(pth):
         else:
             rm_tree(child)
     pth.rmdir()
+
 
 @app.route("/", methods=["GET", "POST"])
 def predict():
