@@ -2,7 +2,7 @@ import subprocess
 import sys
 from pathlib import Path
 import flask
-from flask import render_template, request, abort, redirect
+from flask import render_template, request, abort, redirect, send_file
 from werkzeug.utils import secure_filename
 
 app = flask.Flask(__name__)
@@ -17,7 +17,7 @@ def detect_fire(source_file, weights, project, name, device_name="cpu"):
          f"--device={device_name}",
          f"--project={project}",
          f"--name={name}"])
-
+    p.wait()
 
 def rm_tree(pth):
     pth = Path(pth)
@@ -44,7 +44,10 @@ def predict():
         file_name = f.filename
         f.save(filepath)
         detect_fire(filepath, "test_weights/best.pt", "flame", "result")
-        return redirect(f"flame/result/{file_name}")
+        for i in Path('flame/result').glob("*"):
+            to_send = i
+        return send_file(to_send, as_attachment=True)
+
     return render_template("index.html")
 
 
