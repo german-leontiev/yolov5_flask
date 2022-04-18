@@ -11,7 +11,7 @@ app = flask.Flask(__name__)
 def detect_fire(source_file, weights, project, name, device_name="cpu"):
     p = subprocess.Popen(
         [sys.executable,
-         "./detect.py",
+         "./yolov5/detect.py",
          f"--weights={weights}",
          f"--source={source_file}",
          f"--device={device_name}",
