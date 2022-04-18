@@ -1,6 +1,6 @@
 import subprocess
 import sys
-
+from pathlib import Path
 import flask
 from flask import render_template, request, abort, redirect
 from werkzeug.utils import secure_filename
@@ -19,6 +19,15 @@ def detect_fire(source_file, weights, project, name, device_name="cpu"):
          f"--name={name}"])
 
 
+def rm_tree(pth):
+    pth = Path(pth)
+    for child in pth.glob('*'):
+        if child.is_file():
+            child.unlink()
+        else:
+            rm_tree(child)
+    pth.rmdir()
+
 @app.route("/", methods=["GET", "POST"])
 def predict():
     if request.method == "POST":
@@ -28,13 +37,14 @@ def predict():
         if not f:
             return
         # TODO create folder for files
-        filepath = "saved_files/" + secure_filename(f.filename)
+        foldername = "flame/uploaded/"
+        rm_tree("flame")
+        Path(foldername).mkdir(parents=True, exist_ok=True)
+        filepath = foldername + secure_filename(f.filename)
         file_name = f.filename
         f.save(filepath)
         detect_fire(filepath, "test_weights/best.pt", "flame", "result")
         return redirect(f"flame/result/{file_name}")
-
-
     return render_template("index.html")
 
 
