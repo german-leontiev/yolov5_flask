@@ -43,7 +43,6 @@ def predict():
         rm_tree("flame")
         Path(foldername).mkdir(parents=True, exist_ok=True)
         filepath = foldername + secure_filename(f.filename)
-        file_name = f.filename
         f.save(filepath)
         detect_fire(filepath, "test_weights/best.pt", "flame", "result")
         for i in Path('flame/result').glob("*"):
