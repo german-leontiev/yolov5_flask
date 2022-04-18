@@ -1,6 +1,6 @@
 FROM ultralytics/yolov5:latest-cpu
 
-WORKDIR /user/src
+WORKDIR /usr/src
 COPY requirements.txt .
 RUN pip --no-cache install -r requirements.txt
 
