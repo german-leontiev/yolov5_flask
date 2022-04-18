@@ -40,6 +40,7 @@ def predict():
             return
         # TODO create folder for files
         foldername = "flame/uploaded/"
+        Path("flame").mkdir(parents=True, exist_ok=True)
         rm_tree("flame")
         Path(foldername).mkdir(parents=True, exist_ok=True)
         filepath = foldername + secure_filename(f.filename)
