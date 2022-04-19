@@ -53,4 +53,9 @@ def predict():
     return render_template("index.html")
 
 
+@app.route("/image_transformation/", methods=["GET", "POST"])
+def image_transform():
+    return render_template("image_transform.html")
+
+
 app.run(host="0.0.0.0", port=5000)
